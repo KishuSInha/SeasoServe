@@ -1,0 +1,9 @@
+# Query: Eat Right for Every Climate
+# ContextLines: 1
+
+1 result - 1 file
+
+index.html:
+  7      <title>SeasoServe - Nature guides, we serve.</title>
+  8:     <meta name="description" content="AI-powered food recommendations based on your environment, season, and health. Nature guides, we serve with personalized meal suggestions." />
+  9      <meta name="author" content="SeasoServe" />

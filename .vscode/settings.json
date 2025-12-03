@@ -1,7 +1,4 @@
 {
     "python-envs.defaultEnvManager": "ms-python.python:system",
-    "python-envs.pythonProjects": [],
-    liveshare.forceReadOnlyMode: false
-    "liveshare.guestServiceProxy": "auto",
-    "liveshare.allowGuestDebugControl": true
+    "python-envs.pythonProjects": []
 }

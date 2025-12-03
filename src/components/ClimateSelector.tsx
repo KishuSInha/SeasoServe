@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Sun, CloudRain, Snowflake, Wind, Droplets } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Reveal from "./Reveal";
 
 const climates = [
   {
@@ -74,10 +75,14 @@ const ClimateSelector = () => {
   const [selectedClimate, setSelectedClimate] = useState(climates[0]);
 
   return (
-    <section id="climate" className="py-24 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="climate" className="py-24 bg-gradient-to-br from-background via-sky-blue/5 to-background relative overflow-hidden">
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-20 left-1/4 w-[450px] h-[450px] bg-[hsl(217,91%,72%)] blur-3xl animate-[morphBlob_24s_ease-in-out_infinite]" />
+        <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-[hsl(230,95%,76%)] blur-3xl animate-[morphBlob_26s_ease-in-out_infinite_reverse]" />
+      </div>
+      <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-12">
+        <Reveal className="text-center mb-12">
           <span className="text-leaf-green font-semibold text-sm uppercase tracking-wider">
             Interactive Guide
           </span>
@@ -87,33 +92,36 @@ const ClimateSelector = () => {
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Select your current weather condition to see personalized food recommendations
           </p>
-        </div>
+        </Reveal>
 
         {/* Climate Buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {climates.map((climate) => (
-            <Button
-              key={climate.id}
-              variant="climate"
-              size="lg"
-              onClick={() => setSelectedClimate(climate)}
-              className={`gap-2 ${
-                selectedClimate.id === climate.id
-                  ? `${climate.bgActive} border-2`
-                  : "bg-card"
-              }`}
-            >
-              <climate.icon className={`w-5 h-5 ${climate.color.split(" ")[1]}`} />
-              {climate.label}
-            </Button>
-          ))}
-        </div>
+        <Reveal delay={200}>
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            {climates.map((climate) => (
+              <Button
+                key={climate.id}
+                variant="climate"
+                size="lg"
+                onClick={() => setSelectedClimate(climate)}
+                className={`gap-2 ${
+                  selectedClimate.id === climate.id
+                    ? `${climate.bgActive} border-2`
+                    : "bg-card"
+                }`}
+              >
+                <climate.icon className={`w-5 h-5 ${climate.color.split(" ")[1]}`} />
+                {climate.label}
+              </Button>
+            ))}
+          </div>
+        </Reveal>
 
         {/* Food Recommendations */}
-        <div className="max-w-4xl mx-auto">
-          <div
-            className={`rounded-2xl p-8 border-2 ${selectedClimate.bgActive} transition-all duration-300`}
-          >
+        <Reveal delay={400}>
+          <div className="max-w-4xl mx-auto">
+            <div
+              className={`rounded-2xl p-8 border-2 ${selectedClimate.bgActive} transition-all duration-300`}
+            >
             <div className="flex items-center gap-3 mb-6">
               <div className={`w-12 h-12 rounded-xl ${selectedClimate.color.split(" ")[0]}/20 flex items-center justify-center`}>
                 <selectedClimate.icon className={`w-6 h-6 ${selectedClimate.color.split(" ")[1]}`} />
@@ -142,8 +150,9 @@ const ClimateSelector = () => {
                 </div>
               ))}
             </div>
+            </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

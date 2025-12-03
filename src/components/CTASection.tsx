@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Smartphone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import Reveal from "./Reveal";
 
 const CTASection = () => {
   const [email, setEmail] = useState("");
@@ -28,7 +29,7 @@ const CTASection = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <Smartphone className="w-16 h-16 text-leaf-green mx-auto mb-6" />
 
           <h2 className="text-3xl md:text-5xl font-bold text-primary-foreground mb-6">
@@ -62,7 +63,7 @@ const CTASection = () => {
           <p className="text-primary-foreground/60 text-sm mt-4">
             No spam, ever. Unsubscribe anytime.
           </p>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

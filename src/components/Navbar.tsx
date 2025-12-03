@@ -5,10 +5,15 @@ import { Menu, X } from "lucide-react";
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      
+      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (window.scrollY / windowHeight) * 100;
+      setScrollProgress(scrolled);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -22,14 +27,23 @@ const Navbar = () => {
   ];
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-card/95 backdrop-blur-md shadow-md py-3"
-          : "bg-transparent py-5"
-      }`}
-    >
-      <div className="container mx-auto px-4 flex items-center justify-between">
+    <>
+      {/* Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 right-0 h-1 bg-muted z-[60]">
+        <div 
+          className="h-full bg-gradient-to-r from-sky-blue via-accent to-sky-blue transition-all duration-300 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
+      <nav
+        className={`fixed top-1 left-0 right-0 z-50 transition-all duration-300 pointer-events-none ${
+          isScrolled
+            ? "bg-card/80 backdrop-blur-xl shadow-lg py-3"
+            : "bg-transparent py-5"
+        }`}
+      >
+      <div className="container mx-auto px-4 flex items-center justify-between pointer-events-auto">
         <a href="#" className="flex items-center gap-2">
           <span className="text-2xl font-bold text-gradient">SeasoServe</span>
         </a>
@@ -91,7 +105,8 @@ const Navbar = () => {
           </div>
         </div>
       )}
-    </nav>
+      </nav>
+    </>
   );
 };
 

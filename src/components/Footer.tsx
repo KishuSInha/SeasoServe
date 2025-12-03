@@ -1,7 +1,25 @@
-import { Twitter, Instagram, Linkedin, Github } from "lucide-react";
+import { useState } from "react";
+import { Twitter, Instagram, Linkedin, Github, ArrowRight, Smartphone } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import Reveal from "./Reveal";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+  const { toast } = useToast();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      toast({
+        title: "You're on the list!",
+        description: "We'll notify you when SeasoServe launches.",
+      });
+      setEmail("");
+    }
+  };
 
   const footerLinks = {
     product: [
@@ -31,15 +49,64 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-foreground text-background py-16">
+    <footer className="bg-foreground text-background relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-0 left-0 w-64 h-64 bg-sky-blue rounded-full blur-3xl animate-[morphBlob_20s_ease-in-out_infinite]" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl animate-[morphBlob_25s_ease-in-out_infinite_reverse]" />
+      </div>
+
+      {/* CTA Section */}
+      <div className="pt-8 pb-24 relative z-10">
+        <div className="container mx-auto px-4">
+          <Reveal className="max-w-3xl mx-auto text-center">
+            <Smartphone className="w-16 h-16 text-sky-blue mx-auto mb-6" />
+
+            <h2 className="text-3xl md:text-5xl font-bold text-background mb-6">
+              Ready to Eat Smarter?
+            </h2>
+
+            <p className="text-background/80 text-lg mb-10">
+              Join thousands waiting for the future of personalized nutrition.
+              Get early access when we launch on Android & iOS.
+            </p>
+
+            {/* Email Signup */}
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
+            >
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-background/10 border-background/20 text-background placeholder:text-background/50 h-12"
+                required
+              />
+              <Button variant="secondary" size="lg" type="submit" className="gap-2">
+                Get Early Access
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </form>
+
+            <p className="text-background/60 text-sm mt-4">
+              No spam, ever. Unsubscribe anytime.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+
+      {/* Footer Links */}
+      <div className="py-16 border-t border-background/10 relative z-10">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Brand */}
-          <div className="lg:col-span-2">
+          <Reveal className="lg:col-span-2">
             <h3 className="text-3xl font-bold text-background mb-4">SeasoServe</h3>
             <p className="text-background/70 max-w-sm mb-6">
               AI-powered food recommendations based on your environment, season, and health.
-              Eat right for every climate.
+              Nature guides, we serve.
             </p>
             <div className="flex gap-4">
               {socialLinks.map((social) => (
@@ -53,10 +120,10 @@ const Footer = () => {
                 </a>
               ))}
             </div>
-          </div>
+          </Reveal>
 
           {/* Links */}
-          <div>
+          <Reveal delay={200}>
             <h4 className="font-semibold text-background mb-4">Product</h4>
             <ul className="space-y-3">
               {footerLinks.product.map((link) => (
@@ -70,9 +137,9 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
 
-          <div>
+          <Reveal delay={300}>
             <h4 className="font-semibold text-background mb-4">Company</h4>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
@@ -86,9 +153,9 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
 
-          <div>
+          <Reveal delay={400}>
             <h4 className="font-semibold text-background mb-4">Legal</h4>
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
@@ -102,18 +169,21 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-background/60 text-sm">
-            © {currentYear} SeasoServe. All rights reserved.
-          </p>
-          <p className="text-background/60 text-sm">
-            Made with 🌿 for healthier eating
-          </p>
-        </div>
+        <Reveal delay={500}>
+          <div className="pt-8 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-background/60 text-sm">
+              © {currentYear} SeasoServe. All rights reserved.
+            </p>
+            <p className="text-background/60 text-sm">
+              Made with 🌿 for healthier eating
+            </p>
+          </div>
+        </Reveal>
+      </div>
       </div>
     </footer>
   );

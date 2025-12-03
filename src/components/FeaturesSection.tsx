@@ -8,6 +8,7 @@ import {
   ScanLine,
   BarChart3,
 } from "lucide-react";
+import Reveal from "./Reveal";
 
 const features = [
   {
@@ -70,10 +71,15 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="py-24 bg-muted/50">
-      <div className="container mx-auto px-4">
+    <section id="features" className="py-24 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-10 left-10 w-96 h-96 bg-[hsl(217,91%,70%)] blur-3xl animate-[morphBlob_20s_ease-in-out_infinite]" />
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-[hsl(230,95%,75%)] blur-3xl animate-[morphBlob_25s_ease-in-out_infinite_reverse]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[hsl(217,91%,80%)] blur-3xl animate-[morphBlob_30s_ease-in-out_infinite]" />
+      </div>
+      <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <Reveal className="text-center mb-16">
           <span className="text-leaf-green font-semibold text-sm uppercase tracking-wider">
             Powerful Features
           </span>
@@ -83,31 +89,29 @@ const FeaturesSection = () => {
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Comprehensive tools to help you eat smarter based on your environment
           </p>
-        </div>
+        </Reveal>
 
         {/* Features Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
-            <div
-              key={feature.title}
-              className="bg-card rounded-xl p-6 border border-border card-hover group"
-              style={{ animationDelay: `${index * 0.05}s` }}
-            >
-              {/* Icon */}
-              <div
-                className={`w-14 h-14 rounded-xl ${feature.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
-              >
-                <feature.icon className={`w-7 h-7 ${feature.color}`} />
-              </div>
+            <Reveal key={feature.title} delay={index * 100} vanish>
+              <div className="bg-card rounded-xl p-6 border border-border card-hover group glow-on-hover">
+                {/* Icon */}
+                <div
+                  className={`w-14 h-14 rounded-xl ${feature.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                >
+                  <feature.icon className={`w-7 h-7 ${feature.color}`} />
+                </div>
 
-              {/* Content */}
-              <h3 className="text-lg font-bold text-foreground mb-2">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {feature.description}
-              </p>
-            </div>
+                {/* Content */}
+                <h3 className="text-lg font-bold text-foreground mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {feature.description}
+                </p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
