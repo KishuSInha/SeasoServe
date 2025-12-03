@@ -13,6 +13,12 @@ const benefits = [
 const WhySection = () => {
   return (
     <section id="why" className="py-24 bg-gradient-to-tr from-background via-sky-blue/5 to-background relative overflow-hidden">
+      <div
+    className="absolute inset-0 -z-10 bg-cover bg-center opacity-40"
+    style={{
+      backgroundImage: "url('/food1.jpg')",
+    }}
+    />
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-1/3 left-20 w-96 h-96 bg-[hsl(217,91%,73%)] blur-3xl animate-[morphBlob_27s_ease-in-out_infinite]" />
         <div className="absolute bottom-1/4 right-10 w-[500px] h-[500px] bg-[hsl(230,95%,77%)] blur-3xl animate-[morphBlob_23s_ease-in-out_infinite_reverse]" />
@@ -46,39 +52,6 @@ const WhySection = () => {
                   </Reveal>
                 ))}
               </ul>
-            </div>
-          </Reveal>
-
-          {/* Visual */}
-          <Reveal delay={200}>
-            <div className="relative">
-              <div className="aspect-square rounded-3xl gradient-hero overflow-hidden relative">
-                {/* Decorative Elements */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="grid grid-cols-2 gap-4 p-8">
-                    {[
-                      { emoji: "🌡️", label: "Climate Aware" },
-                      { emoji: "🥗", label: "Healthy Meals" },
-                      { emoji: "🧠", label: "AI Powered" },
-                      { emoji: "🌍", label: "Travel Ready" },
-                    ].map((item, index) => (
-                      <Reveal key={item.label} delay={400 + index * 100}>
-                        <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 text-center card-hover">
-                          <div className="text-4xl mb-2">{item.emoji}</div>
-                          <p className="text-sm font-medium text-foreground">
-                            {item.label}
-                          </p>
-                        </div>
-                      </Reveal>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating Badge */}
-              <div className="absolute -bottom-4 -right-4 bg-leaf-green text-secondary-foreground px-6 py-3 rounded-full font-semibold shadow-lg animate-pulse-glow">
-                Science-Backed
-              </div>
             </div>
           </Reveal>
         </div>
