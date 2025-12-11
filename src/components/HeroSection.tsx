@@ -6,20 +6,29 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { useToast } from "@/components/ui/use-toast";
 
 const HeroSection = () => {
-  const { ref, inView } = useInView<HTMLElement>({ threshold: 0.2 });
-  const isMobile = useIsMobile();
   const { toast } = useToast();
-
-  // Example: enable scroll animation only on desktop
-  const animated = !isMobile && inView;
 
   return (
     <section
-      ref={ref}
-      className="min-h-screen gradient-hero relative overflow-hidden flex items-center pt-20"
+      className="min-h-screen w-full relative flex items-center justify-center"
     >
+      {/* Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute top-0 left-0 w-full h-full object-cover"
+        style={{ zIndex: 0 }}
+      >
+        <source src="/oranges.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/30" style={{ zIndex: 1 }}></div>
+
       {/* Floating Weather Icons with Glow */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 2 }}>
         <Sun className="absolute top-[20%] left-[10%] w-12 h-12 text-sun-yellow/50 floating-icon" />
         <Cloud
           className="absolute top-[30%] right-[15%] w-16 h-16 text-sky-blue/40 floating-icon"
@@ -43,53 +52,31 @@ const HeroSection = () => {
         />
       </div>
 
-      {/* Animated Gradient Orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-sky-blue rounded-full blur-3xl animate-[morphBlob_15s_ease-in-out_infinite]" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent rounded-full blur-3xl animate-[morphBlob_18s_ease-in-out_infinite_reverse]" />
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative" style={{ zIndex: 10 }}>
         <div className="max-w-4xl mx-auto text-center">
           {/* Logo */}
-          <div className="mb-8 animate-fade-up">
-            <h2 className="text-5xl md:text-7xl font-extrabold text-gradient mx-auto animate-[shimmer_3s_linear_infinite]">
+          <div className="mb-8">
+            <h2 className="text-5xl md:text-7xl font-extrabold text-gradient mx-auto">
               SeasoServe
             </h2>
           </div>
 
           {/* Headline */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-foreground mb-6 animate-fade-up-delay-1">
-            <span className="inline-block animate-[slideInLeft_0.8s_ease-out]">
-              Nature guides,
-            </span>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6">
+            Nature guides,
             <br />
-            <span className="text-gradient inline-block animate-[slideInRight_0.8s_ease-out_0.2s_both]">
-              we serve.
-            </span>
+            <span className="text-gradient">we serve.</span>
           </h1>
 
           {/* Subheading */}
-          <p
-            className={
-              animated
-                ? "text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-up-delay-2"
-                : "text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
-            }
-          >
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-10">
             AI-powered food recommendations based on your environment, season,
             and health. Stay nourished, energized, and healthy—no matter the
             weather.
           </p>
 
           {/* CTAs */}
-          <div
-            className={
-              animated
-                ? "flex flex-col sm:flex-row gap-4 justify-center animate-fade-up-delay-3"
-                : "flex flex-col sm:flex-row gap-4 justify-center"
-            }
-          >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               variant="hero"
               size="xl"
@@ -108,14 +95,8 @@ const HeroSection = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div
-            className={
-              animated
-                ? "mt-16 animate-fade-up-delay-3"
-                : "mt-16"
-            }
-          >
-            <p className="text-sm text-muted-foreground mb-4">
+          <div className="mt-16">
+            <p className="text-sm text-white/80 mb-4">
               Personalized for your climate
             </p>
             <div className="flex justify-center gap-6">
@@ -127,10 +108,9 @@ const HeroSection = () => {
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="flex flex-col items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
-                >
+                  className="flex flex-col items-center gap-1 opacity-60 hover:opacity-100 transition-opacity" >
                   <item.icon className={`w-6 h-6 ${item.color}`} />
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-white/70">
                     {item.label}
                   </span>
                 </div>
@@ -138,21 +118,6 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Bottom Wave */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg
-          viewBox="0 0 1440 120"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full"
-        >
-          <path
-            d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
-            fill="hsl(var(--background))"
-          />
-        </svg>
       </div>
     </section>
   );

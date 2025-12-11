@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Twitter, Instagram, Linkedin, Github, ArrowRight, Smartphone } from "lucide-react";
+import { Twitter, Instagram, Linkedin, Github, ArrowRight, Smartphone, Users, Globe, Leaf, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -48,16 +48,88 @@ const Footer = () => {
     { icon: Github, href: "#", label: "GitHub" },
   ];
 
+  const stats = [
+    {
+      icon: Users,
+      value: "10K+",
+      label: "Active Users",
+      color: "text-sky-blue",
+      bgColor: "bg-sky-blue/10",
+    },
+    {
+      icon: Globe,
+      value: "50+",
+      label: "Countries",
+      color: "text-accent",
+      bgColor: "bg-accent/10",
+    },
+    {
+      icon: Leaf,
+      value: "1M+",
+      label: "Meals Planned",
+      color: "text-leaf-green",
+      bgColor: "bg-leaf-green/10",
+    },
+    {
+      icon: TrendingUp,
+      value: "95%",
+      label: "Satisfaction",
+      color: "text-sun-yellow",
+      bgColor: "bg-sun-yellow/10",
+    },
+  ];
+
   return (
-    <footer className="bg-foreground text-background relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-64 h-64 bg-sky-blue rounded-full blur-3xl animate-[morphBlob_20s_ease-in-out_infinite]" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl animate-[morphBlob_25s_ease-in-out_infinite_reverse]" />
+    <footer className="text-background relative overflow-hidden">
+      {/* Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute top-0 left-0 w-full h-full object-cover"
+        style={{ zIndex: 0 }}
+      >
+        <source src="/winter.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/60" style={{ zIndex: 1 }}></div>
+
+      {/* Stats Section */}
+      <div className="py-16 relative" style={{ zIndex: 10 }}>
+        <div className="container mx-auto px-4">
+          <Reveal className="text-center mb-12">
+            <h3 className="text-2xl md:text-3xl font-bold text-background mb-2">
+              Trusted by Food Lovers Worldwide
+            </h3>
+            <p className="text-background/70">
+              Join thousands who eat smarter with SeasoServe
+            </p>
+          </Reveal>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {stats.map((stat, index) => (
+              <Reveal key={stat.label} delay={index * 100}>
+                <div className="bg-background/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-background/20">
+                  <div className={`w-16 h-16 rounded-2xl ${stat.bgColor} flex items-center justify-center mx-auto mb-4`}>
+                    <stat.icon className={`w-8 h-8 ${stat.color}`} />
+                  </div>
+                  <div className="text-3xl md:text-4xl font-bold text-background mb-1">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-background/70 font-medium">
+                    {stat.label}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* CTA Section */}
-      <div className="pt-8 pb-24 relative z-10">
+      <div className="pt-8 pb-24 relative" style={{ zIndex: 10 }}>
         <div className="container mx-auto px-4">
           <Reveal className="max-w-3xl mx-auto text-center">
             <Smartphone className="w-16 h-16 text-sky-blue mx-auto mb-6" />
@@ -98,7 +170,7 @@ const Footer = () => {
       </div>
 
       {/* Footer Links */}
-      <div className="py-16 border-t border-background/10 relative z-10">
+      <div className="py-16 border-t border-background/10 relative" style={{ zIndex: 10 }}>
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Brand */}
@@ -174,13 +246,15 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <Reveal delay={500}>
-          <div className="pt-8 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-background/60 text-sm">
-              © {currentYear} SeasoServe. All rights reserved.
-            </p>
-            <p className="text-background/60 text-sm">
-              Made with 🌿 for healthier eating
-            </p>
+          <div className="pt-8 border-t border-background/10">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-background/60 text-sm">
+                © {currentYear} SeasoServe. All rights reserved.
+              </p>
+              <p className="text-background/60 text-sm">
+                Healthier choices, one tap at a time.
+              </p>
+            </div>
           </div>
         </Reveal>
       </div>

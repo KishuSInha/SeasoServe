@@ -13,12 +13,6 @@ const benefits = [
 const WhySection = () => {
   return (
     <section id="why" className="py-24 bg-gradient-to-tr from-background via-sky-blue/5 to-background relative overflow-hidden">
-      <div
-    className="absolute inset-0 -z-10 bg-cover bg-center opacity-40"
-    style={{
-      backgroundImage: "url('/food1.jpg')",
-    }}
-    />
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-1/3 left-20 w-96 h-96 bg-[hsl(217,91%,73%)] blur-3xl animate-[morphBlob_27s_ease-in-out_infinite]" />
         <div className="absolute bottom-1/4 right-10 w-[500px] h-[500px] bg-[hsl(230,95%,77%)] blur-3xl animate-[morphBlob_23s_ease-in-out_infinite_reverse]" />

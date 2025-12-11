@@ -105,14 +105,7 @@
   }
 
   html {
-    scroll-behavior: smooth;
     height: 100%;
-  }
-
-  @media (min-width: 768px) {
-    html {
-      scroll-snap-type: y proximity;
-    }
   }
   
   body {
@@ -131,14 +124,7 @@
   }
 
   section {
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
-  
-    /* allow scrolling */
     height: auto !important;
-    overflow-y: auto !important;
-  
-    /* do not block scroll */
     overflow-x: hidden;
   }
   
@@ -147,25 +133,8 @@
     overscroll-behavior: auto !important;
   }
 
-  /* Smooth section transitions */
-  @media (prefers-reduced-motion: no-preference) {
-    .scroll-snap-section {
-      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-      will-change: opacity, transform;
-    }
-  }
-
-  /* Scroll snap container */
   main {
-    scroll-snap-type: y proximity;
     scroll-padding-top: 80px;
-  }
-
-  .scroll-snap-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
-    min-height: 100vh;
-    position: relative;
   }
   
 }

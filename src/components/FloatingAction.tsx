@@ -37,14 +37,6 @@ const FloatingAction = () => {
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-sky-blue to-accent opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300" />
         </button>
       )}
-
-      {/* Floating CTA Badge */}
-      <div className="fixed bottom-8 left-8 z-50 animate-[fadeInScale_0.5s_ease-out]">
-        <div className="bg-gradient-to-r from-sky-blue to-accent text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-pulse-glow">
-          <Sparkles className="w-4 h-4" />
-          <span className="text-sm font-semibold">AI-Powered</span>
-        </div>
-      </div>
     </>
   );
 };
