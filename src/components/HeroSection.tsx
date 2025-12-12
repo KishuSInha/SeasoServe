@@ -4,6 +4,7 @@ import { Sun, Cloud, CloudRain, Snowflake, Wind } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useToast } from "@/components/ui/use-toast";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const { toast } = useToast();
@@ -89,9 +90,11 @@ const HeroSection = () => {
             >
               Step Into
             </Button>
-            <Button variant="hero-outline" size="xl">
-              Login
-            </Button>
+            <Link to="/login">
+              <Button variant="hero-outline" size="xl">
+                Login
+              </Button>
+            </Link>
           </div>
 
           {/* Trust Indicators */}

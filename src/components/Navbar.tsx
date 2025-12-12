@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -54,9 +55,11 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm">
-            Login
-          </Button>
+          <Link to="/login">
+            <Button variant="ghost" size="sm">
+              Login
+            </Button>
+          </Link>
           <Button variant="hero" size="sm">
             Get Started
           </Button>
@@ -87,9 +90,11 @@ const Navbar = () => {
               </a>
             ))}
             <div className="flex gap-3 pt-4 border-t border-border">
-              <Button variant="ghost" className="flex-1">
-                Login
-              </Button>
+              <Link to="/login" className="flex-1">
+                <Button variant="ghost" className="w-full">
+                  Login
+                </Button>
+              </Link>
               <Button variant="hero" className="flex-1">
                 Get Started
               </Button>

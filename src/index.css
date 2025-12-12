@@ -43,6 +43,14 @@
     --warm-red: 0 84% 60%;
     --neutral-grey: 220 9% 46%;
 
+    /* Food-themed colors */
+    --tomato-red: 9 100% 64%;
+    --carrot-orange: 25 95% 53%;
+    --lettuce-green: 120 60% 50%;
+    --cheese-yellow: 48 100% 67%;
+    --bread-brown: 30 67% 47%;
+    --berry-purple: 270 50% 40%;
+
     /* Gradients - Modern & Dynamic */
     --gradient-hero: linear-gradient(135deg, hsl(217 91% 97%) 0%, hsl(0 0% 100%) 40%, hsl(220 100% 98%) 100%);
     --gradient-primary: linear-gradient(135deg, hsl(0 0% 5%) 0%, hsl(220 20% 10%) 100%);
@@ -246,6 +254,82 @@
   .floating-icon:nth-child(3) {
     animation-delay: -4s;
   }
+
+  .food-bg {
+    background: linear-gradient(135deg, 
+      hsl(25 95% 97%) 0%, 
+      hsl(48 100% 96%) 25%, 
+      hsl(120 60% 97%) 50%, 
+      hsl(9 100% 97%) 75%, 
+      hsl(270 50% 97%) 100%);
+  }
+
+  .floating-food {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.6;
+    animation: floatFood 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .floating-food:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+  .floating-food:nth-child(2) { top: 20%; right: 15%; animation-delay: -2s; }
+  .floating-food:nth-child(3) { top: 60%; left: 5%; animation-delay: -4s; }
+  .floating-food:nth-child(4) { bottom: 20%; right: 10%; animation-delay: -6s; }
+  .floating-food:nth-child(5) { bottom: 10%; left: 20%; animation-delay: -1s; }
+  .floating-food:nth-child(6) { top: 40%; right: 5%; animation-delay: -3s; }
+  .floating-food:nth-child(7) { top: 70%; left: 15%; animation-delay: -5s; }
+  .floating-food:nth-child(8) { bottom: 40%; right: 20%; animation-delay: -7s; }
+
+  .food-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .login-bg {
+    background: 
+      radial-gradient(circle at 15% 25%, hsl(25 80% 95%) 0%, transparent 40%),
+      radial-gradient(circle at 85% 75%, hsl(45 70% 95%) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, hsl(15 60% 96%) 0%, transparent 50%),
+      linear-gradient(135deg, 
+        hsl(25 60% 94%) 0%, 
+        hsl(45 55% 92%) 25%, 
+        hsl(15 65% 90%) 50%, 
+        hsl(35 50% 93%) 75%, 
+        hsl(55 45% 95%) 100%);
+  }
+
+  .login-card {
+    background: rgba(255, 248, 240, 0.95);
+    backdrop-filter: blur(25px);
+    border: 1px solid hsl(25 30% 85%);
+    box-shadow: 0 15px 50px rgba(255, 140, 85, 0.2);
+  }
+
+  .login-input {
+    background: hsl(35 40% 98%);
+    border: 1px solid hsl(25 35% 80%);
+    color: hsl(25 50% 20%);
+  }
+
+  .login-input:focus {
+    border-color: hsl(25 60% 65%);
+    box-shadow: 0 0 0 3px hsl(25 60% 65% / 0.2);
+  }
+
+  .login-btn {
+    background: linear-gradient(135deg, hsl(25 75% 60%), hsl(15 80% 55%));
+    color: hsl(0 0% 100%);
+    border: none;
+  }
+
+  .login-btn:hover {
+    background: linear-gradient(135deg, hsl(25 80% 55%), hsl(15 85% 50%));
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 30px hsl(25 75% 60% / 0.4);
+  }
 }
 
 @layer utilities {
@@ -384,6 +468,21 @@
   }
   50% {
     transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes floatFood {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-15px) rotate(2deg) scale(1.1);
+  }
+  50% {
+    transform: translateY(-25px) rotate(-2deg) scale(0.9);
+  }
+  75% {
+    transform: translateY(-10px) rotate(1deg) scale(1.05);
   }
 }
 
