@@ -19,7 +19,6 @@ const CURRENT_USER_KEY = 'seasoserve_current_user';
 export const registerUser = (userData: Omit<User, 'id' | 'createdAt'>): { success: boolean; message: string } => {
   try {
     const users = getUsers();
-    
     // Check if email already exists
     if (users.find(u => u.email === userData.email)) {
       return { success: false, message: 'Email already registered' };
