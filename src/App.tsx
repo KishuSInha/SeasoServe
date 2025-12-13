@@ -19,6 +19,7 @@ import Recipes from "./pages/Recipes";
 import FoodDetail from "./pages/FoodDetail";
 import ProgressPage from "./pages/Progress";
 import Learn from "./pages/Learn";
+import MealPlan from "./pages/MealPlan";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/food/:name" element={<FoodDetail />} />
           <Route path="/progress" element={<ProgressPage />} />
           <Route path="/learn" element={<Learn />} />
+          <Route path="/meal-plan" element={<MealPlan />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

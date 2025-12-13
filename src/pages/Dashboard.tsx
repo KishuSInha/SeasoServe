@@ -3,16 +3,24 @@ import { useNavigate } from "react-router-dom";
 import { getCurrentUser, logoutUser } from "@/lib/auth";
 import { 
   Sun, LogOut, UtensilsCrossed, Bot, Plane, User, Droplets, Activity, TrendingUp,
-  MapPin, Calendar, Apple, Lightbulb, ThumbsUp, ThumbsDown, Settings, ShoppingCart, Globe
+  MapPin, Calendar, Apple, Lightbulb, ThumbsUp, ThumbsDown, Settings, ShoppingCart, Globe, X, ChefHat
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
+import { useLocation } from "@/hooks/useLocation";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
+  const [showLocationPopup, setShowLocationPopup] = useState(false);
+  const [showMealIntervalPopup, setShowMealIntervalPopup] = useState(false);
+  const [showMealTimePopup, setShowMealTimePopup] = useState(false);
+  const [mealInterval, setMealIntervalState] = useState<string>('');
+  const [currentMealTime, setCurrentMealTime] = useState<string>('');
+  const { locationData, loading: locationLoading, detectLocation } = useLocation();
+  const [showRecipeAssistant, setShowRecipeAssistant] = useState(false);
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -20,6 +28,18 @@ const Dashboard = () => {
       navigate("/login");
     } else {
       setUser(currentUser);
+      const savedInterval = localStorage.getItem('mealInterval');
+      if (savedInterval) {
+        setMealIntervalState(savedInterval);
+      }
+      // Auto-detect location if not already requested
+      if (!localStorage.getItem('locationPermissionRequested')) {
+        detectLocation();
+      }
+      setShowMealIntervalPopup(true);
+      if (!localStorage.getItem('locationPermissionRequested')) {
+        setShowLocationPopup(true);
+      }
     }
   }, [navigate]);
 
@@ -28,10 +48,265 @@ const Dashboard = () => {
     navigate("/");
   };
 
+  const requestLocation = () => {
+    detectLocation();
+    localStorage.setItem('locationPermissionRequested', 'true');
+    setShowLocationPopup(false);
+  };
+
+
+
+  const skipLocation = () => {
+    localStorage.setItem('locationPermissionRequested', 'true');
+    setShowLocationPopup(false);
+  };
+
+  const setMealInterval = (interval: string) => {
+    localStorage.setItem('mealInterval', interval);
+    setMealIntervalState(interval);
+    setShowMealIntervalPopup(false);
+    // Show meal time popup after interval is set
+    setShowMealTimePopup(true);
+  };
+
+  const setMealTime = (mealTime: string) => {
+    setCurrentMealTime(mealTime);
+    setShowMealTimePopup(false);
+    // Show location popup after meal time is set (if needed)
+    if (!localStorage.getItem('locationPermissionRequested')) {
+      setShowLocationPopup(true);
+    }
+  };
+
+  const getMealOptions = () => {
+    switch (mealInterval) {
+      case '2-meals':
+        return [
+          { id: 'brunch', name: 'Brunch', emoji: '🥐', time: '10:00 AM - 12:00 PM' },
+          { id: 'dinner', name: 'Dinner', emoji: '🍽️', time: '6:00 PM - 8:00 PM' }
+        ];
+      case '5-meals':
+        return [
+          { id: 'breakfast', name: 'Breakfast', emoji: '🌅', time: '7:00 AM - 9:00 AM' },
+          { id: 'snack1', name: 'Morning Snack', emoji: '🍎', time: '10:00 AM - 11:00 AM' },
+          { id: 'lunch', name: 'Lunch', emoji: '🥗', time: '12:00 PM - 2:00 PM' },
+          { id: 'snack2', name: 'Evening Snack', emoji: '🥜', time: '4:00 PM - 5:00 PM' },
+          { id: 'dinner', name: 'Dinner', emoji: '🍽️', time: '7:00 PM - 9:00 PM' }
+        ];
+      default:
+        return [
+          { id: 'breakfast', name: 'Breakfast', emoji: '🌅', time: '7:00 AM - 9:00 AM' },
+          { id: 'lunch', name: 'Lunch', emoji: '🥗', time: '12:00 PM - 2:00 PM' },
+          { id: 'dinner', name: 'Dinner', emoji: '🍽️', time: '7:00 PM - 9:00 PM' }
+        ];
+    }
+  };
+
+  const getCurrentMealSuggestions = () => {
+    const isHot = locationData?.weather?.temp > 25;
+    const isPoorAir = locationData?.weather?.aqi > 100;
+    const isVegan = user?.dietType === 'vegan';
+    const isVegetarian = user?.dietType === 'vegetarian';
+    const allergies = user?.allergies || [];
+    
+    const filterByAllergies = (foods: any[]) => {
+      return foods.filter(food => {
+        if (allergies.includes('nuts') && food.name.toLowerCase().includes('nut')) return false;
+        if (allergies.includes('dairy') && food.name.toLowerCase().includes('milk')) return false;
+        if (allergies.includes('gluten') && food.name.toLowerCase().includes('bread')) return false;
+        return true;
+      });
+    };
+
+    const mealData = {
+      breakfast: filterByAllergies([
+        ...(isHot ? [
+          { emoji: '🥤', name: 'Coconut Water Smoothie', calories: '150 kcal', temp: '❄️ Cooling' },
+          { emoji: '🍉', name: 'Watermelon Bowl', calories: '120 kcal', temp: '❄️ Hydrating' }
+        ] : [
+          { emoji: '🥣', name: 'Warm Oatmeal', calories: '250 kcal', temp: '☀️ Warming' },
+          { emoji: '☕', name: 'Herbal Tea & Toast', calories: '200 kcal', temp: '☀️ Comforting' }
+        ]),
+        ...(isPoorAir ? [
+          { emoji: '🫐', name: 'Antioxidant Berry Bowl', calories: '180 kcal', temp: '☀️ Detoxifying' }
+        ] : []),
+        ...(isVegan ? [
+          { emoji: '🌱', name: 'Plant Protein Bowl', calories: '220 kcal', temp: '☀️ Energizing' }
+        ] : !isVegetarian ? [
+          { emoji: '🍳', name: 'Veggie Scramble', calories: '280 kcal', temp: '☀️ Energizing' }
+        ] : [])
+      ]),
+      lunch: filterByAllergies([
+        ...(isHot ? [
+          { emoji: '🥒', name: 'Cucumber Salad', calories: '160 kcal', temp: '❄️ Cooling' },
+          { emoji: '🥥', name: 'Coconut Rice Bowl', calories: '280 kcal', temp: '❄️ Refreshing' }
+        ] : [
+          { emoji: '🍲', name: 'Warm Veggie Soup', calories: '240 kcal', temp: '☀️ Warming' },
+          { emoji: '🍛', name: 'Hot Rice Bowl', calories: '320 kcal', temp: '☀️ Comforting' }
+        ]),
+        ...(isPoorAir ? [
+          { emoji: '🥬', name: 'Green Detox Salad', calories: '200 kcal', temp: '☀️ Cleansing' }
+        ] : [])
+      ]),
+      dinner: filterByAllergies([
+        ...(isHot ? [
+          { emoji: '🥗', name: 'Light Garden Salad', calories: '180 kcal', temp: '❄️ Light' },
+          { emoji: '🍇', name: 'Fruit & Yogurt Bowl', calories: '220 kcal', temp: '❄️ Cooling' }
+        ] : [
+          { emoji: '🍲', name: 'Hearty Vegetable Stew', calories: '300 kcal', temp: '☀️ Warming' },
+          { emoji: '🥘', name: 'Spiced Curry', calories: '280 kcal', temp: '☀️ Warming' }
+        ])
+      ]),
+      snack1: filterByAllergies([
+        ...(isHot ? [
+          { emoji: '🍉', name: 'Watermelon Cubes', calories: '60 kcal', temp: '❄️ Hydrating' }
+        ] : [
+          { emoji: '🍎', name: 'Apple Slices', calories: '80 kcal', temp: '☀️ Fresh' }
+        ])
+      ]),
+      snack2: filterByAllergies([
+        ...(isPoorAir ? [
+          { emoji: '🫐', name: 'Blueberry Mix', calories: '90 kcal', temp: '☀️ Antioxidant' }
+        ] : [
+          { emoji: '🥜', name: 'Trail Mix', calories: '110 kcal', temp: '☀️ Energizing' }
+        ])
+      ]),
+      brunch: filterByAllergies([
+        ...(isHot ? [
+          { emoji: '🥤', name: 'Iced Smoothie Bowl', calories: '250 kcal', temp: '❄️ Refreshing' }
+        ] : [
+          { emoji: '🥐', name: 'Warm Avocado Toast', calories: '320 kcal', temp: '☀️ Satisfying' }
+        ])
+      ])
+    };
+    
+    const suggestions = mealData[currentMealTime as keyof typeof mealData] || mealData.breakfast;
+    return suggestions.length > 0 ? suggestions : [{ emoji: '🍽️', name: 'Custom Meal', calories: '200 kcal', temp: '☀️ Balanced' }];
+  };
+
+  const openRecipeAssistant = () => {
+    setShowRecipeAssistant(true);
+  };
+
+  const getMealTimeGreeting = () => {
+    const greetings = {
+      breakfast: { text: 'Good Morning! Ready for breakfast?', bg: 'from-yellow-100 to-orange-100', icon: '🌅' },
+      brunch: { text: 'Perfect time for brunch!', bg: 'from-orange-100 to-yellow-100', icon: '🥐' },
+      lunch: { text: 'Lunch time! What sounds good?', bg: 'from-green-100 to-blue-100', icon: '☀️' },
+      snack1: { text: 'Morning snack break!', bg: 'from-green-100 to-yellow-100', icon: '🍎' },
+      snack2: { text: 'Evening snack time!', bg: 'from-orange-100 to-red-100', icon: '🥜' },
+      dinner: { text: 'Dinner time! Let\'s wind down', bg: 'from-purple-100 to-blue-100', icon: '🌙' }
+    };
+    return greetings[currentMealTime as keyof typeof greetings] || greetings.breakfast;
+  };
+
   if (!user) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
+      {/* Meal Time Selection Popup */}
+      {showMealTimePopup && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-md shadow-2xl bg-gradient-to-br from-orange-50 via-yellow-50 to-white border-orange-200">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-white" />
+                </div>
+                Which meal are you planning?
+              </CardTitle>
+              <CardDescription className="mt-3 text-muted-foreground">
+                Select your current meal time for personalized suggestions 🍽️
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {getMealOptions().map((meal) => (
+                <Button 
+                  key={meal.id}
+                  onClick={() => setMealTime(meal.id)} 
+                  variant="outline" 
+                  className="w-full border-orange-200 hover:bg-orange-50 justify-start h-auto py-3"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{meal.emoji}</span>
+                    <div className="text-left">
+                      <div className="font-medium">{meal.name}</div>
+                      <div className="text-xs text-muted-foreground">{meal.time}</div>
+                    </div>
+                  </div>
+                </Button>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Meal Interval Popup */}
+      {showMealIntervalPopup && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-md shadow-2xl bg-gradient-to-br from-orange-50 via-yellow-50 to-white border-orange-200">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full flex items-center justify-center">
+                  <UtensilsCrossed className="w-5 h-5 text-white" />
+                </div>
+                How often do you eat?
+              </CardTitle>
+              <CardDescription className="mt-3 text-muted-foreground">
+                Help us personalize your meal recommendations 🍽️
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button onClick={() => setMealInterval('3-meals')} variant="outline" className="w-full border-orange-200 hover:bg-orange-50 justify-start">
+                🌅 3 meals a day (Breakfast, Lunch, Dinner)
+              </Button>
+              <Button onClick={() => setMealInterval('5-meals')} variant="outline" className="w-full border-orange-200 hover:bg-orange-50 justify-start">
+                🍎 5 small meals (Include snacks)
+              </Button>
+              <Button onClick={() => setMealInterval('2-meals')} variant="outline" className="w-full border-orange-200 hover:bg-orange-50 justify-start">
+                ⏰ 2 meals a day (Intermittent fasting)
+              </Button>
+              <Button onClick={() => setMealInterval('custom')} variant="outline" className="w-full border-orange-200 hover:bg-orange-50 justify-start">
+                ⚙️ Custom schedule
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Location Permission Popup */}
+      {showLocationPopup && !showMealIntervalPopup && !showMealTimePopup && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-md shadow-2xl bg-gradient-to-br from-orange-50 via-yellow-50 to-white border-orange-200">
+            <CardHeader className="pb-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-xl">
+                    <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full flex items-center justify-center">
+                      <MapPin className="w-5 h-5 text-white" />
+                    </div>
+                    Location Access
+                  </CardTitle>
+                  <CardDescription className="mt-3 text-muted-foreground">
+                    Get personalized seasonal food recommendations based on your local climate and available ingredients. 🌱
+                  </CardDescription>
+                </div>
+                <Button variant="ghost" size="sm" onClick={skipLocation} className="hover:bg-orange-100">
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button onClick={requestLocation} disabled={locationLoading} className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white shadow-lg">
+                {locationLoading ? '📍 Detecting...' : '🌍 Allow Location Access'}
+              </Button>
+              <Button onClick={skipLocation} variant="outline" className="w-full border-orange-200 hover:bg-orange-50">
+                Skip for Now
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-border py-3 sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 flex justify-between items-center">
@@ -57,13 +332,13 @@ const Dashboard = () => {
         <div className="container mx-auto px-4 max-w-6xl">
           
           {/* Welcome Banner with Stats */}
-          <div className="bg-gradient-to-r from-orange-100 via-yellow-50 to-green-50 rounded-2xl p-6 mb-6 shadow-sm">
+          <div className={`bg-gradient-to-r ${currentMealTime ? getMealTimeGreeting().bg : 'from-orange-100 via-yellow-50 to-green-50'} rounded-2xl p-6 mb-6 shadow-sm`}>
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-              Hello, {user.name}! 👋
+              {currentMealTime ? `${getMealTimeGreeting().icon} ${getMealTimeGreeting().text}` : `Hello, ${user?.name}! 👋`}
             </h2>
-            <p className="text-muted-foreground mb-4">What would you like to eat today?</p>
+            <p className="text-muted-foreground mb-4">{currentMealTime ? `Perfect ${currentMealTime} suggestions for you` : 'What would you like to eat today?'}</p>
             
-            {/* Profile Stats Inline */}
+            {/* Profile Stats & Environment Info */}
             <div className="flex flex-wrap gap-4">
               <div className="bg-white/80 backdrop-blur rounded-lg px-4 py-2 shadow-sm">
                 <p className="text-xs text-muted-foreground">Diet</p>
@@ -73,6 +348,25 @@ const Dashboard = () => {
                 <p className="text-xs text-muted-foreground">Age</p>
                 <p className="text-sm font-bold">{user.age} years</p>
               </div>
+              {locationData?.weather && (
+                <>
+                  <div className="bg-white/80 backdrop-blur rounded-lg px-4 py-2 shadow-sm">
+                    <p className="text-xs text-muted-foreground">Weather</p>
+                    <p className="text-sm font-bold flex items-center gap-1">
+                      {locationData.weather.condition === 'Sunny' ? '☀️' : locationData.weather.condition === 'Cloudy' ? '☁️' : locationData.weather.condition === 'Rainy' ? '🌧️' : '🌤️'} {locationData.weather.temp}°C
+                    </p>
+                  </div>
+                  <div className="bg-white/80 backdrop-blur rounded-lg px-4 py-2 shadow-sm">
+                    <p className="text-xs text-muted-foreground">Air Quality</p>
+                    <p className="text-sm font-bold">
+                      AQI {locationData.weather.aqi} 
+                      <span className={`text-xs ml-1 ${locationData.weather.aqi > 100 ? 'text-red-600' : locationData.weather.aqi > 50 ? 'text-yellow-600' : 'text-green-600'}`}>
+                        {locationData.weather.aqi > 100 ? 'Poor' : locationData.weather.aqi > 50 ? 'Moderate' : 'Good'}
+                      </span>
+                    </p>
+                  </div>
+                </>
+              )}
               <div className="bg-white/80 backdrop-blur rounded-lg px-4 py-2 shadow-sm">
                 <p className="text-xs text-muted-foreground">Height</p>
                 <p className="text-sm font-bold">{user.height} cm</p>
@@ -84,50 +378,70 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Today's Smart Meal Suggestions */}
+          {/* Quick Access Features - Top Priority */}
+          <div className="grid sm:grid-cols-3 gap-3 mb-6">
+            <Card onClick={() => navigate("/climate-suggestions")} className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <Sun className="w-8 h-8 text-orange-500" />
+                  <div>
+                    <CardTitle className="text-sm">Climate Suggestions</CardTitle>
+                    {locationData && <p className="text-xs text-muted-foreground">📍 Live location active</p>}
+                  </div>
+                </div>
+              </CardHeader>
+            </Card>
+            <Card onClick={() => navigate("/meal-plan")} className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <UtensilsCrossed className="w-8 h-8 text-green-500" />
+                  <CardTitle className="text-sm">Meal Plan</CardTitle>
+                </div>
+              </CardHeader>
+            </Card>
+            <Card className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <Apple className="w-8 h-8 text-red-500" />
+                  <CardTitle className="text-sm">Food Scanner</CardTitle>
+                </div>
+              </CardHeader>
+            </Card>
+          </div>
+
+          {/* Current Meal Suggestions */}
           <div className="mb-6">
-            <h3 className="text-xl font-bold text-foreground mb-4">Meals for Today</h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="aspect-video bg-gradient-to-br from-orange-200 to-yellow-100 rounded-lg mb-3 flex items-center justify-center text-4xl">🥣</div>
-                  <CardTitle className="text-base">Oatmeal Bowl</CardTitle>
-                  <CardDescription className="text-xs">250 kcal • ☀️ Cooling</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <Button size="sm" variant="outline" className="w-full">View Recipe</Button>
-                </CardContent>
-              </Card>
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="aspect-video bg-gradient-to-br from-green-200 to-lime-100 rounded-lg mb-3 flex items-center justify-center text-4xl">🥗</div>
-                  <CardTitle className="text-base">Fresh Salad</CardTitle>
-                  <CardDescription className="text-xs">180 kcal • ☀️ Cooling</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <Button size="sm" variant="outline" className="w-full">View Recipe</Button>
-                </CardContent>
-              </Card>
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="aspect-video bg-gradient-to-br from-blue-200 to-cyan-100 rounded-lg mb-3 flex items-center justify-center text-4xl">🥤</div>
-                  <CardTitle className="text-base">Smoothie</CardTitle>
-                  <CardDescription className="text-xs">150 kcal • ☀️ Cooling</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <Button size="sm" variant="outline" className="w-full">View Recipe</Button>
-                </CardContent>
-              </Card>
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="aspect-video bg-gradient-to-br from-purple-200 to-pink-100 rounded-lg mb-3 flex items-center justify-center text-4xl">🍲</div>
-                  <CardTitle className="text-base">Veggie Soup</CardTitle>
-                  <CardDescription className="text-xs">220 kcal • ❄️ Warming</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <Button size="sm" variant="outline" className="w-full">View Recipe</Button>
-                </CardContent>
-              </Card>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-foreground">
+                {currentMealTime ? `${currentMealTime.charAt(0).toUpperCase() + currentMealTime.slice(1)} Options` : 'Meal Suggestions'}
+              </h3>
+              {currentMealTime && (
+                <Button onClick={() => setShowMealTimePopup(true)} variant="outline" size="sm" className="gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Change Meal
+                </Button>
+              )}
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {getCurrentMealSuggestions().map((meal, index) => (
+                <Card key={index} className="hover:shadow-lg transition-shadow">
+                  <CardHeader className="pb-3">
+                    <div className="aspect-video bg-gradient-to-br from-orange-200 to-yellow-100 rounded-lg mb-3 flex items-center justify-center text-4xl">
+                      {meal.emoji}
+                    </div>
+                    <CardTitle className="text-base">{meal.name}</CardTitle>
+                    <CardDescription className="text-xs">{meal.calories} • {meal.temp}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="flex gap-2">
+                      <Button size="sm" variant="outline" className="flex-1">View Recipe</Button>
+                      <Button size="sm" onClick={openRecipeAssistant} className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white">
+                        <ChefHat className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
 
@@ -235,9 +549,20 @@ const Dashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <p className="text-sm">💡 Replace fried snacks with roasted chana today.</p>
-              <p className="text-sm">💧 Coconut water recommended due to high humidity.</p>
-              <p className="text-sm">🥗 Add cucumber to meals for extra hydration.</p>
+              {locationData?.weather ? (
+                <>
+                  <p className="text-sm">🌡️ {locationData.weather.temp}°C - {locationData.weather.temp > 25 ? 'Cooling foods like watermelon, cucumber recommended' : 'Warming soups and hot meals suggested'}.</p>
+                  <p className="text-sm">🌬️ AQI {locationData.weather.aqi} - {locationData.weather.aqi > 100 ? 'Antioxidant foods like berries, green leafy vegetables' : 'Good air quality for fresh outdoor meals'}.</p>
+                  <p className="text-sm">🌍 Live location detected for real-time meal recommendations.</p>
+                  <p className="text-sm">🥗 Diet: {user?.dietType} meals personalized{user?.allergies?.length > 0 ? `, avoiding ${user.allergies.join(', ')}` : ''}.</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm">🥗 Personalized for {user?.dietType} diet{user?.allergies?.length > 0 ? `, avoiding ${user.allergies.join(', ')}` : ''}.</p>
+                  <p className="text-sm">💧 Stay hydrated with seasonal fruits and vegetables.</p>
+                  <p className="text-sm">🌱 Fresh, local ingredients recommended for better nutrition.</p>
+                </>
+              )}
             </CardContent>
           </Card>
 
@@ -289,37 +614,13 @@ const Dashboard = () => {
             </Card>
           </div>
 
-          {/* Quick Access Features */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-20">
-            <Card onClick={() => navigate("/climate-suggestions")} className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]">
+          {/* Recipe Assistant - Secondary Access */}
+          <div className="mb-20">
+            <Card onClick={openRecipeAssistant} className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02] bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-200">
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3">
-                  <Sun className="w-8 h-8 text-orange-500" />
-                  <CardTitle className="text-sm">Climate Suggestions</CardTitle>
-                </div>
-              </CardHeader>
-            </Card>
-            <Card className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]">
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <UtensilsCrossed className="w-8 h-8 text-green-500" />
-                  <CardTitle className="text-sm">Meal Plan</CardTitle>
-                </div>
-              </CardHeader>
-            </Card>
-            <Card className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]">
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <Bot className="w-8 h-8 text-blue-500" />
-                  <CardTitle className="text-sm">AI Chatbot</CardTitle>
-                </div>
-              </CardHeader>
-            </Card>
-            <Card className="cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]">
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <Apple className="w-8 h-8 text-red-500" />
-                  <CardTitle className="text-sm">Food Scanner</CardTitle>
+                  <ChefHat className="w-8 h-8 text-orange-500" />
+                  <CardTitle className="text-sm">Recipe Assistant</CardTitle>
                 </div>
               </CardHeader>
             </Card>
@@ -343,12 +644,86 @@ const Dashboard = () => {
             <Globe className="w-5 h-5" />
             <span className="text-xs">Travel</span>
           </Button>
+          <Button variant="ghost" size="sm" className="flex-col h-auto gap-1" onClick={openRecipeAssistant}>
+            <ChefHat className="w-5 h-5" />
+            <span className="text-xs">Recipes</span>
+          </Button>
           <Button variant="ghost" size="sm" className="flex-col h-auto gap-1" onClick={() => navigate("/profile-edit")}>
             <User className="w-5 h-5" />
             <span className="text-xs">Profile</span>
           </Button>
         </div>
       </div>
+
+      {/* Recipe Assistant Modal */}
+      {showRecipeAssistant && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-2xl max-h-[80vh] overflow-hidden shadow-2xl bg-gradient-to-br from-orange-50 via-yellow-50 to-white border-orange-200">
+            <CardHeader className="pb-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-xl">
+                    <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full flex items-center justify-center">
+                      <ChefHat className="w-5 h-5 text-white" />
+                    </div>
+                    Recipe Assistant
+                  </CardTitle>
+                  <CardDescription className="mt-2 text-muted-foreground">
+                    Get personalized recipes based on your preferences and current meal suggestions 👨‍🍳
+                  </CardDescription>
+                </div>
+                <Button variant="ghost" size="sm" onClick={() => setShowRecipeAssistant(false)} className="hover:bg-orange-100">
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4 overflow-y-auto">
+              <div className="grid gap-3">
+                <Button 
+                  onClick={() => {
+                    setShowRecipeAssistant(false);
+                    navigate("/chatbot");
+                  }} 
+                  className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white justify-start h-auto py-4"
+                >
+                  <div className="flex items-center gap-3">
+                    <Bot className="w-6 h-6" />
+                    <div className="text-left">
+                      <div className="font-medium">AI Recipe Chat</div>
+                      <div className="text-xs opacity-90">Ask for custom recipes and cooking tips</div>
+                    </div>
+                  </div>
+                </Button>
+                
+                {currentMealTime && getCurrentMealSuggestions().length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="font-medium text-sm text-muted-foreground">Get recipes for your current {currentMealTime} suggestions:</h4>
+                    {getCurrentMealSuggestions().slice(0, 3).map((meal, index) => (
+                      <Button 
+                        key={index}
+                        onClick={() => {
+                          setShowRecipeAssistant(false);
+                          navigate(`/chatbot?recipe=${encodeURIComponent(meal.name)}`);
+                        }}
+                        variant="outline" 
+                        className="w-full border-orange-200 hover:bg-orange-50 justify-start h-auto py-3"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{meal.emoji}</span>
+                          <div className="text-left">
+                            <div className="font-medium text-sm">{meal.name}</div>
+                            <div className="text-xs text-muted-foreground">{meal.calories} • {meal.temp}</div>
+                          </div>
+                        </div>
+                      </Button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };
