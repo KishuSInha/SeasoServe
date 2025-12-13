@@ -81,12 +81,7 @@ const HeroSection = () => {
             <Button
               variant="hero"
               size="xl"
-              onClick={() =>
-                toast({
-                  title: "Welcome to SeasoServe",
-                  description: "Personalized food guidance is just a step away.",
-                })
-              }
+              onClick={() => window.location.href = '/register'}
             >
               Step Into
             </Button>

@@ -1,16 +1,36 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
+import { loginUser } from "@/lib/auth";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password });
+    
+    const result = loginUser(email, password);
+    
+    if (result.success) {
+      toast({
+        title: "Login Successful!",
+        description: `Welcome back, ${result.user?.name}!`,
+      });
+      navigate("/home");
+    } else {
+      toast({
+        title: "Login Failed",
+        description: result.message,
+        variant: "destructive",
+      });
+    }
   };
 
   const seasonalIcons = ['🍓', '🥑', '🍅', '🥕', '🌽', '🍎', '🥦', '🍊', '🥒', '🫐', '🍑', '🥭', '🍇', '🥝', '🍌', '🥬'];
@@ -84,8 +104,9 @@ const Login = () => {
             <Button 
               variant="outline" 
               className="w-full border-2 border-orange-300 text-orange-700 hover:bg-orange-50 rounded-xl font-semibold"
+              onClick={() => navigate("/register")}
             >
-              Explore Seasonal Flavors
+              Create New Account
             </Button>
           </div>
         </CardContent>
