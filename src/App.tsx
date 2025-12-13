@@ -7,6 +7,9 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
+import ProfileEdit from "./pages/ProfileEdit";
+import ClimateSuggestions from "./pages/ClimateSuggestions";
 import Onboarding from "./pages/Onboarding";
 import Location from "./pages/Location";
 import Profile from "./pages/Profile";
@@ -29,6 +32,9 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile-edit" element={<ProfileEdit />} />
+          <Route path="/climate-suggestions" element={<ClimateSuggestions />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/location" element={<Location />} />
           <Route path="/profile" element={<Profile />} />

@@ -28,11 +28,7 @@ const steps = [
 const HowItWorksSection = () => {
   return (
     <section id="how-it-works" className="py-24 bg-white relative overflow-hidden">
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-1/4 right-10 w-[500px] h-[500px] bg-[hsl(217,91%,75%)] blur-3xl animate-[morphBlob_22s_ease-in-out_infinite]" />
-        <div className="absolute bottom-1/3 left-10 w-96 h-96 bg-[hsl(230,95%,78%)] blur-3xl animate-[morphBlob_28s_ease-in-out_infinite_reverse]" />
-      </div>
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4">
         {/* Section Header */}
         <Reveal className="text-center mb-16">
           <span className="text-leaf-green font-semibold text-sm uppercase tracking-wider">

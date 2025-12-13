@@ -14,7 +14,7 @@ const features = [
   {
     icon: CloudSun,
     title: "Climate-based Suggestions",
-    description: "Food recommendations that adapt to your local weather and season.",
+    description: "Food recommendations that adapt to your local weather .",
     color: "text-sky-blue",
     bgColor: "bg-sky-blue/10",
   },
@@ -71,13 +71,8 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="py-24 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-10 left-10 w-96 h-96 bg-[hsl(217,91%,70%)] blur-3xl animate-[morphBlob_20s_ease-in-out_infinite]" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-[hsl(230,95%,75%)] blur-3xl animate-[morphBlob_25s_ease-in-out_infinite_reverse]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[hsl(217,91%,80%)] blur-3xl animate-[morphBlob_30s_ease-in-out_infinite]" />
-      </div>
-      <div className="container mx-auto px-4 relative z-10">
+    <section id="features" className="py-24 bg-white relative overflow-hidden">
+      <div className="container mx-auto px-4">
         {/* Section Header */}
         <Reveal className="text-center mb-16">
           <span className="text-leaf-green font-semibold text-sm uppercase tracking-wider">

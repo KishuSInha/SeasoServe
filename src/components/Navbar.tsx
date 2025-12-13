@@ -60,9 +60,11 @@ const Navbar = () => {
               Login
             </Button>
           </Link>
-          <Button variant="hero" size="sm">
-            Get Started
-          </Button>
+          <Link to="/register">
+            <Button variant="hero" size="sm">
+              Get Started
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -90,14 +92,16 @@ const Navbar = () => {
               </a>
             ))}
             <div className="flex gap-3 pt-4 border-t border-border">
-              <Link to="/login" className="flex-1">
-                <Button variant="ghost" className="w-full">
+                  <Link to="/login" className="flex-1">
+                <Button variant="ghost" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
                   Login
                 </Button>
               </Link>
-              <Button variant="hero" className="flex-1">
-                Get Started
-              </Button>
+              <Link to="/register" className="flex-1">
+                <Button variant="hero" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
+                  Get Started
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

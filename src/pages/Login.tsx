@@ -24,7 +24,7 @@ const Login = () => {
         title: "Login Successful!",
         description: `Welcome back, ${result.user?.name}!`,
       });
-      navigate("/home");
+      navigate("/dashboard");
     } else {
       toast({
         title: "Login Failed",
