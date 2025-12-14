@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, MapPin, Loader2, Sun, CloudRain, Snowflake, Wind, Droplets, Thermometer, X, Clock, Shield, Lightbulb, RefreshCw, ThumbsUp, ThumbsDown, AlertTriangle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const ClimateSuggestions = () => {
   const navigate = useNavigate();

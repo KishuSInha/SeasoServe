@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Sun, Cloud, CloudRain, Snowflake, Wind } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 
 const HeroSection = () => {

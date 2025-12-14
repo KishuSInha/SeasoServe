@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "@/lib/auth";
 import { useLocation } from "@/hooks/useLocation";
@@ -35,9 +35,11 @@ const MealPlan = () => {
 
   const mealInterval = localStorage.getItem('mealInterval') || '3-meals';
 
+  const stableLocationData = useMemo(() => locationData, [locationData?.weather?.temp, locationData?.weather?.humidity, locationData?.city]);
+
   const getMealPlan = () => {
-    const isHot = locationData?.weather?.temp > 25;
-    const isHighHumidity = locationData?.weather?.humidity > 70;
+    const isHot = stableLocationData?.weather?.temp > 25;
+    const isHighHumidity = stableLocationData?.weather?.humidity > 70;
     
     const meals = [
       {
@@ -124,8 +126,8 @@ const MealPlan = () => {
   };
 
   const getClimateInsight = () => {
-    const temp = locationData?.weather?.temp || 25;
-    const humidity = locationData?.weather?.humidity || 60;
+    const temp = stableLocationData?.weather?.temp || 25;
+    const humidity = stableLocationData?.weather?.humidity || 60;
     
     if (temp > 30 && humidity > 70) {
       return {
@@ -220,11 +222,11 @@ const MealPlan = () => {
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 <div className="bg-orange-50 p-3 rounded-lg">
                   <p className="text-xs text-muted-foreground">Climate</p>
-                  <p className="text-sm font-bold">{locationData?.weather?.condition || 'Loading...'} · {locationData?.weather?.temp || '--'}°C · {locationData?.weather?.humidity || '--'}% Humidity</p>
+                  <p className="text-sm font-bold">{stableLocationData?.weather?.condition || 'Loading...'} · {stableLocationData?.weather?.temp || '--'}°C</p>
                 </div>
                 <div className="bg-blue-50 p-3 rounded-lg">
                   <p className="text-xs text-muted-foreground">Location</p>
-                  <p className="text-sm font-bold">{locationData?.city || 'Detecting location...'}</p>
+                  <p className="text-sm font-bold">{stableLocationData?.city || 'Detecting location...'}</p>
                 </div>
                 <div className="bg-green-50 p-3 rounded-lg">
                   <p className="text-xs text-muted-foreground">Diet Goal</p>
