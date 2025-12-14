@@ -29,15 +29,20 @@ const Dashboard = () => {
     } else {
       setUser(currentUser);
       const savedInterval = localStorage.getItem('mealInterval');
+      const mealSetupCompleted = localStorage.getItem('mealSetupCompleted');
+      
       if (savedInterval) {
         setMealIntervalState(savedInterval);
       }
+      
+      // Only show meal setup popups if not completed before
+      if (!mealSetupCompleted) {
+        setShowMealIntervalPopup(true);
+      }
+      
       // Auto-detect location if not already requested
       if (!localStorage.getItem('locationPermissionRequested')) {
         detectLocation();
-      }
-      setShowMealIntervalPopup(true);
-      if (!localStorage.getItem('locationPermissionRequested')) {
         setShowLocationPopup(true);
       }
     }
@@ -69,9 +74,15 @@ const Dashboard = () => {
     setShowMealTimePopup(true);
   };
 
+  const changeMealSettings = () => {
+    setShowMealIntervalPopup(true);
+  };
+
   const setMealTime = (mealTime: string) => {
     setCurrentMealTime(mealTime);
     setShowMealTimePopup(false);
+    // Mark meal setup as completed
+    localStorage.setItem('mealSetupCompleted', 'true');
     // Show location popup after meal time is set (if needed)
     if (!localStorage.getItem('locationPermissionRequested')) {
       setShowLocationPopup(true);
@@ -585,6 +596,10 @@ const Dashboard = () => {
                 <Button variant="outline" className="w-full justify-start gap-2" onClick={() => navigate("/profile-edit")}>
                   <Settings className="w-4 h-4" />
                   Update preferences
+                </Button>
+                <Button variant="outline" className="w-full justify-start gap-2" onClick={changeMealSettings}>
+                  <UtensilsCrossed className="w-4 h-4" />
+                  Change meal settings
                 </Button>
               </CardContent>
             </Card>

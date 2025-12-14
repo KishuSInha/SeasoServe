@@ -56,7 +56,6 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-<<<<<<< Updated upstream
           <Link to="/login">
             <Button variant="ghost" size="sm">
               Login
@@ -67,12 +66,6 @@ const Navbar = () => {
               Get Started
             </Button>
           </Link>
-=======
-          <GoogleOAuth />
-          <Button variant="hero" size="sm">
-            Get Started
-          </Button>
->>>>>>> Stashed changes
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -100,7 +93,6 @@ const Navbar = () => {
               </a>
             ))}
             <div className="flex gap-3 pt-4 border-t border-border">
-<<<<<<< Updated upstream
               <Link to="/login" className="flex-1">
                 <Button variant="ghost" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
                   Login
@@ -111,14 +103,6 @@ const Navbar = () => {
                   Get Started
                 </Button>
               </Link>
-=======
-              <div className="flex-1">
-                <GoogleOAuth />
-              </div>
-              <Button variant="hero" className="flex-1">
-                Get Started
-              </Button>
->>>>>>> Stashed changes
             </div>
           </div>
         </div>
