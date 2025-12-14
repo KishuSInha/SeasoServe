@@ -5,7 +5,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+<<<<<<< Updated upstream
 import Register from "./pages/Register";
+=======
+import AuthCallback from "./pages/AuthCallback";
+>>>>>>> Stashed changes
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import ProfileEdit from "./pages/ProfileEdit";
@@ -32,10 +36,14 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
+<<<<<<< Updated upstream
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile-edit" element={<ProfileEdit />} />
           <Route path="/climate-suggestions" element={<ClimateSuggestions />} />
+=======
+          <Route path="/auth/callback" element={<AuthCallback />} />
+>>>>>>> Stashed changes
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/location" element={<Location />} />
           <Route path="/profile" element={<Profile />} />
