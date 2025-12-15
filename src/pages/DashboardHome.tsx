@@ -313,7 +313,7 @@ const DashboardHome = () => {
             <SeasonalLocalProduce locationData={locationData} />
           </div>
 
-          {/* Climate Alerts Modal */}
+          {/* Climate Risk Alerts Modal */}
           {showClimateAlerts && (
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
               <div className="bg-white rounded-2xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto shadow-2xl">
@@ -328,6 +328,7 @@ const DashboardHome = () => {
               </div>
             </div>
           )}
+
 
           {/* Food Scanner Modal */}
           {showFoodScanner && (

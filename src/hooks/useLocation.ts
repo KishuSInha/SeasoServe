@@ -4,11 +4,11 @@ interface LocationData {
   latitude: number;
   longitude: number;
   weather: {
-    temp: number;
+    temperature: number;
     humidity: number;
+    windSpeed: number;
+    visibility: number;
     condition: string;
-    season: string;
-    aqi: number;
   };
   city?: string;
 }
@@ -45,11 +45,11 @@ export const useLocation = () => {
             latitude,
             longitude,
             weather: {
-              temp: Math.round(20 + Math.random() * 15), // 20-35°C
+              temperature: Math.round(20 + Math.random() * 15), // 20-35°C
               humidity: Math.round(40 + Math.random() * 50), // 40-90%
+              windSpeed: Math.round(5 + Math.random() * 20), // 5-25 km/h
+              visibility: Math.round(2 + Math.random() * 8), // 2-10 km
               condition: ['Sunny', 'Cloudy', 'Humid', 'Rainy'][Math.floor(Math.random() * 4)],
-              season: getCurrentSeason(),
-              aqi: Math.round(50 + Math.random() * 150), // 50-200 AQI
             },
             city: city
           };
@@ -62,11 +62,11 @@ export const useLocation = () => {
             latitude,
             longitude,
             weather: {
-              temp: Math.round(20 + Math.random() * 15),
+              temperature: Math.round(20 + Math.random() * 15),
               humidity: Math.round(40 + Math.random() * 50),
+              windSpeed: Math.round(5 + Math.random() * 20),
+              visibility: Math.round(2 + Math.random() * 8),
               condition: ['Sunny', 'Cloudy', 'Humid', 'Rainy'][Math.floor(Math.random() * 4)],
-              season: getCurrentSeason(),
-              aqi: Math.round(50 + Math.random() * 150),
             },
             city: `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`
           };
