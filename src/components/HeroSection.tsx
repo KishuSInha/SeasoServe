@@ -13,17 +13,6 @@ const HeroSection = () => {
     <section
       className="min-h-screen w-full relative flex items-center justify-center"
     >
-      {/* Video Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover"
-        style={{ zIndex: 0 }}
-      >
-        <source src="/oranges.mp4" type="video/mp4" />
-      </video>
 
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/30" style={{ zIndex: 1 }}></div>
