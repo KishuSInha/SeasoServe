@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
+import DashboardHome from "./pages/DashboardHome";
 import ProfileEdit from "./pages/ProfileEdit";
 import ClimateSuggestions from "./pages/ClimateSuggestions";
 import Onboarding from "./pages/Onboarding";
@@ -22,6 +23,7 @@ import ProgressPage from "./pages/Progress";
 import Learn from "./pages/Learn";
 import MealPlan from "./pages/MealPlan";
 import Chatbot from "./pages/Chatbot";
+import TravelMode from "./pages/TravelMode";
 
 const queryClient = new QueryClient();
 
@@ -36,7 +38,11 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<DashboardHome />} />
+          <Route path="/dashboard/climate" element={<ClimateSuggestions />} />
+          <Route path="/dashboard/meal-planner" element={<MealPlan />} />
+          <Route path="/dashboard/chatbot" element={<Chatbot />} />
+          <Route path="/dashboard/travel" element={<TravelMode />} />
           <Route path="/profile-edit" element={<ProfileEdit />} />
           <Route path="/climate-suggestions" element={<ClimateSuggestions />} />
           <Route path="/chatbot" element={<Chatbot />} />

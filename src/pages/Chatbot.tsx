@@ -12,6 +12,30 @@ interface Message {
   timestamp: Date;
 }
 
+// Recipe Database
+const RECIPE_DATABASE: { [key: string]: any } = {
+  "oatmeal": {
+    name: "Healthy Oatmeal Bowl",
+    ingredients: ["1 cup rolled oats", "2 cups water/milk", "1 banana", "1 tbsp honey", "Pinch of salt"],
+    steps: ["Boil water/milk in a pot", "Add oats and salt, cook 5 mins", "Stir occasionally", "Top with banana and honey", "Serve hot"]
+  },
+  "smoothie": {
+    name: "Green Smoothie",
+    ingredients: ["1 banana", "1 cup spinach", "1/2 avocado", "1 cup coconut water", "1 tbsp chia seeds"],
+    steps: ["Add all ingredients to blender", "Blend until smooth", "Add ice if desired", "Pour into glass", "Enjoy fresh"]
+  },
+  "salad": {
+    name: "Fresh Garden Salad",
+    ingredients: ["2 cups mixed greens", "1 cucumber", "1 tomato", "1/4 red onion", "2 tbsp olive oil", "1 tbsp lemon juice"],
+    steps: ["Wash and chop vegetables", "Mix greens in bowl", "Add chopped vegetables", "Whisk oil and lemon", "Dress salad and toss"]
+  },
+  "soup": {
+    name: "Vegetable Soup",
+    ingredients: ["2 cups mixed vegetables", "4 cups vegetable broth", "1 onion", "2 garlic cloves", "Salt and pepper"],
+    steps: ["Sauté onion and garlic", "Add vegetables and cook 5 mins", "Pour in broth", "Simmer 15-20 mins", "Season and serve"]
+  }
+};
+
 const Chatbot = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([
@@ -35,31 +59,8 @@ const Chatbot = () => {
   }, [messages]);
 
   const getRecipe = (query: string) => {
-    const recipes: { [key: string]: any } = {
-      "oatmeal": {
-        name: "Healthy Oatmeal Bowl",
-        ingredients: ["1 cup rolled oats", "2 cups water/milk", "1 banana", "1 tbsp honey", "Pinch of salt"],
-        steps: ["Boil water/milk in a pot", "Add oats and salt, cook 5 mins", "Stir occasionally", "Top with banana and honey", "Serve hot"]
-      },
-      "smoothie": {
-        name: "Green Smoothie",
-        ingredients: ["1 banana", "1 cup spinach", "1/2 avocado", "1 cup coconut water", "1 tbsp chia seeds"],
-        steps: ["Add all ingredients to blender", "Blend until smooth", "Add ice if desired", "Pour into glass", "Enjoy fresh"]
-      },
-      "salad": {
-        name: "Fresh Garden Salad",
-        ingredients: ["2 cups mixed greens", "1 cucumber", "1 tomato", "1/4 red onion", "2 tbsp olive oil", "1 tbsp lemon juice"],
-        steps: ["Wash and chop vegetables", "Mix greens in bowl", "Add chopped vegetables", "Whisk oil and lemon", "Dress salad and toss"]
-      },
-      "soup": {
-        name: "Vegetable Soup",
-        ingredients: ["2 cups mixed vegetables", "4 cups vegetable broth", "1 onion", "2 garlic cloves", "Salt and pepper"],
-        steps: ["Sauté onion and garlic", "Add vegetables and cook 5 mins", "Pour in broth", "Simmer 15-20 mins", "Season and serve"]
-      }
-    };
-
     const lowerQuery = query.toLowerCase();
-    for (const [key, recipe] of Object.entries(recipes)) {
+    for (const [key, recipe] of Object.entries(RECIPE_DATABASE)) {
       if (lowerQuery.includes(key)) {
         return `**${recipe.name}**\n\n**Ingredients:**\n${recipe.ingredients.map((ing: string) => `• ${ing}`).join('\n')}\n\n**Steps:**\n${recipe.steps.map((step: string, i: number) => `${i + 1}. ${step}`).join('\n')}\n\n*Cooking time: 10-20 minutes* ⏰`;
       }
