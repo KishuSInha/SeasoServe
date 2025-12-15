@@ -388,6 +388,18 @@
     transform: translateY(-4px);
   }
 
+  .orbit-spin {
+    animation: spin-slow 18s linear infinite;
+  }
+
+  .orbit-counter {
+    animation: spin-slow-reverse 18s linear infinite;
+  }
+
+  .orbit-chip {
+    @apply px-3 py-1 rounded-full bg-white/90 text-[11px] text-gray-700 shadow-sm border border-gray-200 backdrop-blur-sm;
+  }
+
   .section-preview {
     opacity: 0.5;
     transform: scale(0.98);
@@ -483,6 +495,24 @@
   }
   75% {
     transform: translateY(-10px) rotate(1deg) scale(1.05);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-slow-reverse {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
   }
 }
 

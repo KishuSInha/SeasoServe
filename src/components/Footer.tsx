@@ -1,5 +1,16 @@
 import { useState } from "react";
-import { Twitter, Instagram, Linkedin, Github, ArrowRight, Smartphone, Users, Globe, Leaf, TrendingUp } from "lucide-react";
+import {
+  Twitter,
+  Instagram,
+  Linkedin,
+  Github,
+  ArrowRight,
+  CloudSun,
+  UtensilsCrossed,
+  Bot,
+  Plane,
+  Leaf,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -12,136 +23,77 @@ const Footer = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      toast({
-        title: "You're on the list!",
-        description: "We'll notify you when SeasoServe launches.",
-      });
-      setEmail("");
-    }
+    if (!email) return;
+
+    toast({
+      title: "You're on the list 🌱",
+      description: "Early access details will be sent to your inbox.",
+    });
+
+    setEmail("");
   };
 
   const footerLinks = {
-    product: [
-      { label: "Features", href: "#features" },
-      { label: "How It Works", href: "#how-it-works" },
-      { label: "Climate Guide", href: "#climate" },
-      { label: "Pricing", href: "#" },
-    ],
-    company: [
-      { label: "About", href: "#" },
-      { label: "Team", href: "#" },
-      { label: "Careers", href: "#" },
-      { label: "Blog", href: "#" },
-    ],
-    legal: [
-      { label: "Privacy Policy", href: "#" },
-      { label: "Terms of Service", href: "#" },
-      { label: "Cookie Policy", href: "#" },
-    ],
+    product: ["Features", "How It Works", "Climate Guide", "Pricing"],
+    company: ["About", "Team", "Careers", "Blog"],
+    legal: ["Privacy Policy", "Terms of Service", "Cookie Policy"],
   };
 
-  const socialLinks = [
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Github, href: "#", label: "GitHub" },
-  ];
-
-  const stats = [
-    {
-      icon: Users,
-      value: "10K+",
-      label: "Active Users",
-      color: "text-sky-blue",
-      bgColor: "bg-sky-blue/10",
-    },
-    {
-      icon: Globe,
-      value: "50+",
-      label: "Countries",
-      color: "text-accent",
-      bgColor: "bg-accent/10",
-    },
-    {
-      icon: Leaf,
-      value: "1M+",
-      label: "Meals Planned",
-      color: "text-leaf-green",
-      bgColor: "bg-leaf-green/10",
-    },
-    {
-      icon: TrendingUp,
-      value: "95%",
-      label: "Satisfaction",
-      color: "text-sun-yellow",
-      bgColor: "bg-sun-yellow/10",
-    },
-  ];
-
   return (
-    <footer className="text-background relative overflow-hidden">
-      {/* Video Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover"
-        style={{ zIndex: 0 }}
-      >
-        <source src="/winter.mp4" type="video/mp4" />
-      </video>
+    <footer className="relative overflow-hidden text-background">
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/60" style={{ zIndex: 1 }}></div>
-
-      {/* Stats Section */}
-      <div className="py-16 relative" style={{ zIndex: 10 }}>
-        <div className="container mx-auto px-4">
-          <Reveal className="text-center mb-12">
-            <h3 className="text-2xl md:text-3xl font-bold text-background mb-2">
-              Trusted by Food Lovers Worldwide
-            </h3>
-            <p className="text-background/70">
-              Join thousands who eat smarter with SeasoServe
-            </p>
-          </Reveal>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <Reveal key={stat.label} delay={index * 100}>
-                <div className="bg-background/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-background/20">
-                  <div className={`w-16 h-16 rounded-2xl ${stat.bgColor} flex items-center justify-center mx-auto mb-4`}>
-                    <stat.icon className={`w-8 h-8 ${stat.color}`} />
-                  </div>
-                  <div className="text-3xl md:text-4xl font-bold text-background mb-1">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-background/70 font-medium">
-                    {stat.label}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
+      {/* ================= BACKGROUND ================= */}
+      <div className="absolute inset-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="hidden md:block w-full h-full object-cover opacity-70"
+        >
+          <source src="/winter.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-black/70 to-black/80" />
       </div>
 
-      {/* CTA Section */}
-      <div className="pt-8 pb-24 relative" style={{ zIndex: 10 }}>
-        <div className="container mx-auto px-4">
-          <Reveal className="max-w-3xl mx-auto text-center">
-            <Smartphone className="w-16 h-16 text-sky-blue mx-auto mb-6" />
+      {/* ================= CTA SECTION (ENHANCED) ================= */}
+      <section className="relative z-10 py-24">
+        <div className="container mx-auto px-6">
+          <Reveal className="max-w-4xl mx-auto text-center space-y-10">
 
-            <h2 className="text-3xl md:text-5xl font-bold text-background mb-6">
-              Ready to Eat Smarter?
-            </h2>
+            {/* Feature Pills */}
+            <div className="flex justify-center gap-4 flex-wrap">
+              {[
+                { icon: CloudSun, label: "Climate-Based" },
+                { icon: Bot, label: "AI Powered" },
+                { icon: UtensilsCrossed, label: "Personalized Meals" },
+                { icon: Plane, label: "Travel Ready" },
+                { icon: Leaf, label: "Seasonal Foods" },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-sm text-background/90"
+                >
+                  <item.icon className="w-4 h-4 text-leaf-green" />
+                  <span className="font-medium">{item.label}</span>
+                </div>
+              ))}
+            </div>
 
-            <p className="text-background/80 text-lg mb-10">
-              Join thousands waiting for the future of personalized nutrition.
-              Get early access when we launch on Android & iOS.
-            </p>
+            {/* Headline */}
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-5xl font-bold">
+                Eat Smarter. Every Season.
+                <span className="block text-leaf-green">
+                  Every Place.
+                </span>
+              </h2>
+
+              <p className="text-lg text-background/75 max-w-2xl mx-auto">
+                Climate-aware meals, AI-powered planning, and seasonal nutrition —
+                tailored to your environment, lifestyle, and travel.
+              </p>
+            </div>
 
             {/* Email Signup */}
             <form
@@ -150,115 +102,131 @@ const Footer = () => {
             >
               <Input
                 type="email"
-                placeholder="Enter your email"
+                required
+                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-background/10 border-background/20 text-background placeholder:text-background/50 h-12"
-                required
+                className="h-12 bg-white/10 border-white/20 text-background placeholder:text-background/50"
               />
-              <Button variant="secondary" size="lg" type="submit" className="gap-2">
+              <Button
+                type="submit"
+                size="lg"
+                className="gap-2 bg-leaf-green text-foreground hover:bg-leaf-green/90"
+              >
                 Get Early Access
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </form>
+            
 
-            <p className="text-background/60 text-sm mt-4">
-              No spam, ever. Unsubscribe anytime.
+            <p className="text-xs text-background/60">
+              ✓ No spam • ✓ Free early access • ✓ Built for real climates
             </p>
           </Reveal>
         </div>
-      </div>
 
-      {/* Footer Links */}
-      <div className="py-16 border-t border-background/10 relative" style={{ zIndex: 10 }}>
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
-          {/* Brand */}
-          <Reveal className="lg:col-span-2">
-            <h3 className="text-3xl font-bold text-background mb-4">SeasoServe</h3>
-            <p className="text-background/70 max-w-sm mb-6">
-              AI-powered food recommendations based on your environment, season, and health.
-              Nature guides, we serve.
-            </p>
-            <div className="flex gap-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-leaf-green hover:text-foreground transition-colors"
-                >
-                  <social.icon className="w-5 h-5" />
-                </a>
-              ))}
-            </div>
-          </Reveal>
-
-          {/* Links */}
-          <Reveal delay={200}>
-            <h4 className="font-semibold text-background mb-4">Product</h4>
-            <ul className="space-y-3">
-              {footerLinks.product.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-background/70 hover:text-leaf-green transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-
-          <Reveal delay={300}>
-            <h4 className="font-semibold text-background mb-4">Company</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-background/70 hover:text-leaf-green transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-
-          <Reveal delay={400}>
-            <h4 className="font-semibold text-background mb-4">Legal</h4>
-            <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-background/70 hover:text-leaf-green transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
-
-        {/* Bottom Bar */}
-        <Reveal delay={500}>
-          <div className="pt-8 border-t border-background/10">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-background/60 text-sm">
-                © {currentYear} SeasoServe. All rights reserved.
-              </p>
-              <p className="text-background/60 text-sm">
-                Healthier choices, one tap at a time.
-              </p>
-            </div>
+        {/* Trust indicators - Enhanced */}
+        <div className="flex flex-wrap items-center justify-center gap-12 pt-10 ">
+          <div className="text-center group hover:scale-110 transition-transform duration-300 cursor-pointer">
+            <p className="text-4xl font-black text-gray-900 mb-1 group-hover:text-green-600 transition-colors duration-300">500+</p>
+            <p className="text-sm text-gray-600 font-bold uppercase tracking-wider">Climate zones</p>
           </div>
-        </Reveal>
-      </div>
-      </div>
+          <div className="text-center group hover:scale-110 transition-transform duration-300 cursor-pointer">
+            <p className="text-4xl font-black text-gray-900 mb-1 group-hover:text-green-600 transition-colors duration-300">1M+</p>
+            <p className="text-sm text-gray-600 font-bold uppercase tracking-wider">Meals served</p>
+          </div>
+          <div className="text-center group hover:scale-110 transition-transform duration-300 cursor-pointer">
+            <p className="text-4xl font-black text-gray-900 mb-1 group-hover:text-green-600 transition-colors duration-300">Real-time</p>
+            <p className="text-sm text-gray-600 font-bold uppercase tracking-wider">Weather sync</p>
+          </div>
+        </div>
+      </section>
+      
+
+      {/* ================= FOOTER LINKS ================= */}
+      <section className="relative z-10 border-t border-white/10 py-16">
+        <div className="container mx-auto px-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+
+            {/* Brand */}
+            <Reveal className="lg:col-span-2">
+              <h3 className="text-3xl font-bold mb-4">SeasoServe</h3>
+              <p className="text-background/70 max-w-sm mb-6">
+                Climate-aware nutrition powered by real-time environmental data.
+                Nature guides, we serve.
+              </p>
+
+              <div className="flex gap-4">
+                {[Twitter, Instagram, Linkedin, Github].map((Icon, idx) => (
+                  <a
+                    key={idx}
+                    href="#"
+                    aria-label="Social link"
+                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-leaf-green hover:text-foreground transition-colors"
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                ))}
+              </div>
+            </Reveal>
+
+            {/* Product */}
+            <Reveal delay={200}>
+              <h4 className="font-semibold mb-4">Product</h4>
+              <ul className="space-y-3 text-background/70">
+                {footerLinks.product.map((item) => (
+                  <li key={item} className="hover:text-leaf-green transition-colors">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+            
+
+            {/* Company */}
+            <Reveal delay={300}>
+              <h4 className="font-semibold mb-4">Company</h4>
+              <ul className="space-y-3 text-background/70">
+                {footerLinks.company.map((item) => (
+                  <li key={item} className="hover:text-leaf-green transition-colors">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+
+            {/* Legal */}
+            <Reveal delay={400}>
+              <h4 className="font-semibold mb-4">Legal</h4>
+              <ul className="space-y-3 text-background/70">
+                {footerLinks.legal.map((item) => (
+                  <li key={item} className="hover:text-leaf-green transition-colors">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+
+          {/* Bottom Bar */}
+          <Reveal delay={500}>
+            <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-background/60">
+              <p>© {currentYear} SeasoServe. All rights reserved.</p>
+              <p>Healthier choices, guided by nature 🌱</p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Reduced Motion Support */}
+      <style>{`
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation: none !important;
+            transition: none !important;
+          }
+        }
+      `}</style>
     </footer>
   );
 };

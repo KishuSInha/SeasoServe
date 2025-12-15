@@ -2,20 +2,14 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
-import GoogleOAuth from "@/components/GoogleOAuth";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-      
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (window.scrollY / windowHeight) * 100;
-      setScrollProgress(scrolled);
+      setIsScrolled(window.scrollY > 40);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -25,22 +19,27 @@ const Navbar = () => {
     { href: "#how-it-works", label: "How It Works" },
     { href: "#features", label: "Features" },
     { href: "#climate", label: "Climate Guide" },
-    { href: "#why", label: "Why SeasoServe" },
+    { href: "#why", label: "Why SeaSoServe" },
   ];
 
   return (
-    <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 pointer-events-none ${
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300
+        ${
           isScrolled
-            ? "bg-card/80 backdrop-blur-xl shadow-lg py-3"
-            : "bg-transparent py-5"
-        }`}
-      >
-      <div className="container mx-auto px-4 flex items-center justify-between pointer-events-auto">
-        <a href="#" className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-gradient">SeasoServe</span>
-        </a>
+            ? "bg-white/80 backdrop-blur-xl shadow-sm py-3"
+            : "bg-white/60 backdrop-blur-md py-4"
+        }
+      `}
+    >
+      <div className="container mx-auto px-6 flex items-center justify-between">
+
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2">
+          <span className="text-2xl font-semibold text-[#2563eb]">
+            SeaSoServe
+          </span>
+        </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
@@ -48,13 +47,20 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
-              className="text-foreground/80 hover:text-foreground font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-leaf-green after:transition-all hover:after:w-full"
+              className="
+                text-gray-600 hover:text-gray-900
+                font-medium transition-colors
+                relative after:absolute after:bottom-[-4px] after:left-0
+                after:w-0 after:h-0.5 after:bg-[#7fa34a]
+                after:transition-all hover:after:w-full
+              "
             >
               {link.label}
             </a>
           ))}
         </div>
 
+        {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-3">
           <Link to="/login">
             <Button variant="ghost" size="sm">
@@ -62,7 +68,10 @@ const Navbar = () => {
             </Button>
           </Link>
           <Link to="/register">
-            <Button variant="hero" size="sm">
+            <Button
+              size="sm"
+              className="bg-[#7fa34a] hover:bg-[#6b8f3f] text-white"
+            >
               Get Started
             </Button>
           </Link>
@@ -70,36 +79,44 @@ const Navbar = () => {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden p-2"
+          className="md:hidden p-2 rounded-md hover:bg-gray-100"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-card shadow-lg animate-fade-in">
-          <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+        <div className="md:hidden bg-white shadow-lg border-t">
+          <div className="container mx-auto px-6 py-6 flex flex-col gap-4">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-foreground/80 hover:text-foreground font-medium py-2"
+                className="text-gray-700 hover:text-gray-900 font-medium py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
               </a>
             ))}
-            <div className="flex gap-3 pt-4 border-t border-border">
+
+            <div className="flex gap-3 pt-4 border-t">
               <Link to="/login" className="flex-1">
-                <Button variant="ghost" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button
+                  variant="ghost"
+                  className="w-full"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   Login
                 </Button>
               </Link>
               <Link to="/register" className="flex-1">
-                <Button variant="hero" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button
+                  className="w-full bg-[#7fa34a] hover:bg-[#6b8f3f] text-white"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   Get Started
                 </Button>
               </Link>
@@ -107,8 +124,7 @@ const Navbar = () => {
           </div>
         </div>
       )}
-      </nav>
-    </>
+    </nav>
   );
 };
 
