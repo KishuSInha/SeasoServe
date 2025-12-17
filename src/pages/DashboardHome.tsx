@@ -215,8 +215,8 @@ const DashboardHome = () => {
           {/* Feature Cards Grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
             <FeatureCard
-              title="Climate-Based Suggestions"
-              description="🌤️ Weather-based meals"
+              title="Climate-Suggestions"
+              description=""
               route="/dashboard/climate"
               icon={<Sun className="w-8 h-8 text-orange-500" />}
             />

@@ -199,7 +199,7 @@ const HeroSection = () => {
 
               {/* Description - Enhanced */}
               <p className="text-gray-700 text-xl max-w-xl leading-relaxed font-medium">
-                SeaSoServe analyzes your <span className="font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded">local weather</span> and recommends meals that support your body's needs today.
+                SeasoServe analyzes your <span className="font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded">local weather</span> and recommends meals that support your body's needs today.
               </p>
             </div>
 
@@ -209,7 +209,7 @@ const HeroSection = () => {
                 <button className="group relative inline-flex items-center justify-center px-10 py-5 rounded-2xl bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white text-lg font-bold shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <span className="relative flex items-center gap-3">
-                    <span>Get Started with SeaSOServe</span>
+                    <span>Get Started with SeasoServe</span>
                     <svg className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>

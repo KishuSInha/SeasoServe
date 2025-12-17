@@ -19,7 +19,7 @@ const Navbar = () => {
     { href: "#how-it-works", label: "How It Works" },
     { href: "#features", label: "Features" },
     { href: "#climate", label: "Climate Guide" },
-    { href: "#why", label: "Why SeaSoServe" },
+    { href: "#why", label: "Why SeasoServe" },
   ];
 
   return (
@@ -37,7 +37,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <span className="text-2xl font-semibold text-[#2563eb]">
-            SeaSoServe
+            SeasoServe
           </span>
         </Link>
 

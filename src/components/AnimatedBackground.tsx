@@ -22,7 +22,7 @@ export default function AnimatedBackground() {
       {backgrounds.map((bg, i) => (
         <div
           key={i}
-          className={`absolute inset-0 bg-gradient-to-br ${bg} transition-opacity duration-[3000ms] ${
+          className={`absolute inset-0 bg-gradient-to-br ${bg} transition-opacity transition-duration-[3000ms] ${
             i === index ? 'opacity-100' : 'opacity-0'
           }`}
         />

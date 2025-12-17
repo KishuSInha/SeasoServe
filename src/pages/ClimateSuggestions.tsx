@@ -204,7 +204,7 @@ const ClimateSuggestions = () => {
           <Button onClick={() => navigate("/dashboard")} variant="ghost" size="sm">
             <ArrowLeft className="w-4 h-4" />
           </Button>
-          <h1 className="text-xl font-bold text-foreground">Climate-based Suggestions</h1>
+          <h1 className="text-xl font-bold text-foreground">Climate Suggestions</h1>
         </div>
       </header>
 
